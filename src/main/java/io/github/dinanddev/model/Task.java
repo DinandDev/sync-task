@@ -15,14 +15,14 @@ public class Task {
      * Constructor for a new Task
      * @param title the title of the Task
      * @param description describes the Task
-     * @param dueDate when the Task is due
+     * @param dueDateTime when the Task is due
      */
-    public Task(String title, String description, LocalDateTime dueDate) {
+    public Task(String title, String description, LocalDateTime dueDateTime) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
         this.creationDateTime = LocalDateTime.now();
-        this.dueDateTime = dueDate;
+        this.dueDateTime = dueDateTime;
         this.completed = false;
     }
 
@@ -71,7 +71,7 @@ public class Task {
         return String.format("[%s] %s (Due: %s) - %s",
                 completed ? "X" : " ",
                 title,
-                dueDateTime != null ? dueDateTime.toLocalDate() : "No date",
+                dueDateTime != null ? dueDateTime.toLocalDate() + "-" + dueDateTime.toLocalTime() : "No date or time",
                 id.substring(0, 8)); // Just show first 8 chars of UUID to keep it clean
     }
 }

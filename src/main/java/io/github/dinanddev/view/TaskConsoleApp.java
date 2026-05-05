@@ -1,6 +1,7 @@
 package io.github.dinanddev.view;
 
 import io.github.dinanddev.model.Task;
+import io.github.dinanddev.service.JsonStorage;
 import io.github.dinanddev.service.TaskManager;
 
 import java.time.LocalDateTime;
@@ -14,20 +15,27 @@ public class TaskConsoleApp {
 
 
     public TaskConsoleApp() {
-        this.taskManager = new TaskManager();
+        this.taskManager = new TaskManager(new JsonStorage("tasks.json"));
         this.input = new Scanner(System.in);
     }
 
+    /**
+     * Runs the console application
+     */
     public void run() {
         String choice;
         do {
             printMenu();
-            choice = input.next();
+            choice = input.nextLine();
             executeChoice(choice);
 
         } while (!choice.equals("0"));
     }
-    public void printMenu() {
+
+    /**
+     * Prints the options menu
+     */
+    private void printMenu() {
         System.out.println("\n--- SyncTask Console Center ---");
         System.out.println("1. ➕ Create New Task");
         System.out.println("2. ❌️ Remove a Task");
@@ -37,28 +45,35 @@ public class TaskConsoleApp {
         System.out.println("0. ❌ Exit");
         System.out.print("Select an option: ");
     }
-public void executeChoice(String choice) {
-        switch (choice) {
-            case "1":
-                createNewTask();
-                break;
-            case "2":
-                removeTask();
-                break;
-            case "3":
-                viewAllTasks();
-                break;
-            case "4":
-                markTaskAsCompleted();
-                break;
-            case "0":
-                break;
-            default:
-                System.out.println("Please enter a valid option.");
+
+    /**
+     * Executes the user's chosen option
+     * @param choice the option the user chose
+     */
+    private void executeChoice(String choice) {
+            switch (choice) {
+                case "1":
+                    createNewTask();
+                    break;
+                case "2":
+                    removeTask();
+                    break;
+                case "3":
+                    viewAllTasks();
+                    break;
+                case "4":
+                    markTaskAsCompleted();
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Please enter a valid option.");
+            }
         }
-    }
 
-
+    /**
+     * Creates a new task based on user input and adds it to the task list
+     */
     private void createNewTask() {
         System.out.println("Title of the task: ");
         String title = input.nextLine();
@@ -79,6 +94,11 @@ public void executeChoice(String choice) {
 
     }
 
+    /**
+     * Gets the index of the task the user wants to select
+     * @param message the prompt to give the user
+     * @return the index of the selected task in the task list, or -1 in case of an empty list
+     */
     private int getTaskIndex(String message) {
         if (taskManager.getTasks().isEmpty()) {
             System.out.println("No tasks available.");
@@ -94,6 +114,7 @@ public void executeChoice(String choice) {
                     System.out.println(i + " - " + taskManager.getTasks().get(i - 1));
                 }
                 index = input.nextInt();
+                input.nextLine();
                 if (index <= taskManager.getTasks().size() && index >= 1) invalid = false;
                 else System.out.println("Invalid number, please try again.");
             } catch (InputMismatchException _) {}
@@ -101,18 +122,27 @@ public void executeChoice(String choice) {
         return index - 1;
     }
 
+    /**
+     * Removes a task from the task list based on user input
+     */
     private void removeTask() {
         int index = getTaskIndex("Enter the number of the task to remove: ");
         if (index != -1) taskManager.removeTask(taskManager.getTasks().get(index).getId());
 
     }
 
+    /**
+     * Displays all tasks in the task list
+     */
     private void viewAllTasks() {
         for (Task task : taskManager.getTasks()) {
             System.out.println("- " + task);
         }
     }
 
+    /**
+     * Marks a task from the task list as completed based on user input
+     */
     private void markTaskAsCompleted() {
         int index = getTaskIndex("Enter the number of the task to mark completed: ");
         if (index != -1) taskManager.markCompleted(taskManager.getTasks().get(index).getId());

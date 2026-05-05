@@ -1,16 +1,26 @@
 package io.github.dinanddev.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Task {
-    private final String id;
+    private String id;
     private String title;
     private String description;
-    private final LocalDateTime creationDateTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime creationDateTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dueDateTime;
+
     private boolean completed;
 
+    // Standard constructor for Jackson
+    public Task() {
+    }
     /**\
      * Constructor for a new Task
      * @param title the title of the Task

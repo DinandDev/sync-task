@@ -14,8 +14,8 @@ public class TaskConsoleApp {
     private final Scanner input;
 
 
-    public TaskConsoleApp() {
-        this.taskManager = new TaskManager(new JsonStorage("tasks.json"));
+    public TaskConsoleApp(TaskManager taskManager) {
+        this.taskManager = taskManager;
         this.input = new Scanner(System.in);
     }
 

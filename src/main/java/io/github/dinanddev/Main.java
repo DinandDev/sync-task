@@ -1,21 +1,29 @@
 package io.github.dinanddev;
 
-import io.github.dinanddev.service.JsonStorage;
-import io.github.dinanddev.service.TaskManager;
-import io.github.dinanddev.view.TaskConsoleApp;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.Scanner;
+public class Main extends Application {
 
-public class Main {
-    static void main() {
-        JsonStorage jsonStorage = new JsonStorage("tasks.json");
-        TaskManager taskManager = new TaskManager(jsonStorage);
-        TaskConsoleApp taskConsoleApp = new TaskConsoleApp(taskManager);
-        taskConsoleApp.run();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        var resource = getClass().getResource("/view/MainView.fxml");
+
+        if (resource == null) {
+            throw new RuntimeException("Fatal Error: MainView.fxml not found in resources/view/");
+        }
+
+        FXMLLoader loader = new FXMLLoader(resource);
+        Scene scene = new Scene(loader.load());
+
+        primaryStage.setTitle("SyncTask");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-
-
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

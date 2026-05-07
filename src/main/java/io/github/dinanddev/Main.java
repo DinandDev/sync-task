@@ -3,7 +3,9 @@ package io.github.dinanddev;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -20,6 +22,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("SyncTask");
         primaryStage.setScene(scene);
+
         primaryStage.show();
     }
 
